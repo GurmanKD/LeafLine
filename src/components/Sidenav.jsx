@@ -14,6 +14,7 @@ import { useAppStore } from '../appStore';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 const drawerWidth = 240;
 
@@ -129,6 +130,35 @@ export default function Sidenav() {
             </ListItemIcon>
             <ListItemText
               primary='Register Land'
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem
+          disablePadding
+          sx={{ display: 'block' }}
+          onClick={() => {
+            navigate('/MonitoringLogs');
+          }}
+        >
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+              <ReceiptLongIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary='Monitoring Logs'
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>

@@ -5,6 +5,7 @@ import RegisterLand from './pages/RegisterLand';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import BuyCredits from './pages/BuyCredits';
+import MonitoringLogs from './pages/MonitoringLogs';
 
 export default function App() {
   return (
@@ -14,6 +15,11 @@ export default function App() {
           <Route path='/' exact element={<Home />}></Route>
           <Route path='/registerLand' exact element={<RegisterLand />}></Route>
           <Route path='/buyCredits' exact element={<BuyCredits />}></Route>
+          <Route
+            path='/monitoringLogs'
+            exact
+            element={<MonitoringLogs />}
+          ></Route>
           <Route path='/analytics' exact element={<Analytics />}></Route>
           <Route path='/settings' exact element={<Settings />}></Route>
         </Routes>
