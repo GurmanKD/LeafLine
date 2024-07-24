@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -9,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 
 const calculateAQI = (
@@ -96,6 +98,7 @@ const calculateAQI = (
 };
 
 export default function MonitoringLogs() {
+  const navigate = useNavigate();
   const [lands, setLands] = useState([]);
   const [selectedLand, setSelectedLand] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -152,6 +155,10 @@ export default function MonitoringLogs() {
 
   const filterData = (v) => {
     setSelectedLand(v);
+  };
+
+  const handleSeeHistory = (land) => {
+    navigate(`/history/${land.id}`);
   };
 
   return (
@@ -218,6 +225,12 @@ export default function MonitoringLogs() {
                   <Typography variant='body2' color='text.secondary'>
                     Resultant AQI: {land.aqi}
                   </Typography>
+                  <Button
+                    variant='contained'
+                    onClick={() => handleSeeHistory(land)}
+                  >
+                    See History
+                  </Button>
                 </CardContent>
               </Card>
             </Grid>

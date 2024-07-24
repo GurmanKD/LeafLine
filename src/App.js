@@ -6,6 +6,7 @@ import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import BuyCredits from './pages/BuyCredits';
 import MonitoringLogs from './pages/MonitoringLogs';
+import History from './components/History'; // Import the History component
 
 export default function App() {
   return (
@@ -22,6 +23,12 @@ export default function App() {
           ></Route>
           <Route path='/analytics' exact element={<Analytics />}></Route>
           <Route path='/settings' exact element={<Settings />}></Route>
+          <Route
+            path='/history/:landId'
+            exact
+            element={<History />} // Add the History component to the route
+          ></Route>{' '}
+          {/* Add History route */}
         </Routes>
       </BrowserRouter>
     </>
