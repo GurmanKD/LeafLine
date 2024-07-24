@@ -108,9 +108,24 @@ export default function History() {
         sulfurDioxide: 70,
         nitrogenDioxide: 90,
       },
-      // More dummy data...
+      {
+        date: '2024-06-29',
+        ozone: 55,
+        particlePollution: 45,
+        carbonMonoxide: 7,
+        sulfurDioxide: 65,
+        nitrogenDioxide: 80,
+      },
+      {
+        date: '2024-06-28',
+        ozone: 50,
+        particlePollution: 40,
+        carbonMonoxide: 6,
+        sulfurDioxide: 60,
+        nitrogenDioxide: 70,
+      },
     ];
-    dummyHistoryData.forEach((entry) => {
+    dummyHistoryData.forEach((entry, index, array) => {
       entry.aqi = calculateAQI(
         entry.ozone,
         entry.particlePollution,
@@ -118,6 +133,7 @@ export default function History() {
         entry.sulfurDioxide,
         entry.nitrogenDioxide
       );
+      entry.flagged = index > 0 && entry.aqi < array[index - 1].aqi - 20;
     });
     setHistoryData(dummyHistoryData);
   };
@@ -131,19 +147,12 @@ export default function History() {
     setPage(0);
   };
 
-  const handleBackClick = () => {
-    navigate('/monitoringLogs');
+  const handleBack = () => {
+    navigate('/monitoringlogs');
   };
 
   return (
-    <Paper
-      sx={{
-        width: '98%',
-        overflow: 'hidden',
-        padding: '12px',
-        margin: '20px auto',
-      }}
-    >
+    <Paper sx={{ width: '98%', overflow: 'hidden', padding: '12px' }}>
       <Typography
         gutterBottom
         variant='h5'
@@ -152,16 +161,11 @@ export default function History() {
       >
         History of Land {landId}
       </Typography>
-      <Button
-        variant='contained'
-        color='primary'
-        onClick={handleBackClick}
-        sx={{ marginBottom: '20px' }}
-      >
+      <Button variant='outlined' onClick={handleBack} sx={{ marginBottom: 2 }}>
         Back to Monitoring Logs
       </Button>
       <Divider />
-      <TableContainer sx={{ marginTop: '20px' }}>
+      <TableContainer sx={{ marginTop: 2 }}>
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
@@ -177,8 +181,16 @@ export default function History() {
           <TableBody>
             {historyData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow hover role='checkbox' tabIndex={-1} key={row.date}>
+              .map((row, index) => (
+                <TableRow
+                  hover
+                  role='checkbox'
+                  tabIndex={-1}
+                  key={row.date}
+                  sx={{
+                    backgroundColor: row.flagged ? '#ffebee' : 'inherit',
+                  }}
+                >
                   <TableCell>{row.date}</TableCell>
                   <TableCell>{row.ozone}</TableCell>
                   <TableCell>{row.particlePollution}</TableCell>

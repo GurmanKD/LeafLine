@@ -70,30 +70,12 @@ const calculateAQI = (
     [650, 1249, 201, 300],
   ];
 
-  const AQI_ozone = getAQISubIndex(ozone, ozoneBreakpoints);
-  const AQI_particlePollution = getAQISubIndex(
-    particlePollution,
-    particlePollutionBreakpoints
-  );
-  const AQI_carbonMonoxide = getAQISubIndex(
-    carbonMonoxide,
-    carbonMonoxideBreakpoints
-  );
-  const AQI_sulfurDioxide = getAQISubIndex(
-    sulfurDioxide,
-    sulfurDioxideBreakpoints
-  );
-  const AQI_nitrogenDioxide = getAQISubIndex(
-    nitrogenDioxide,
-    nitrogenDioxideBreakpoints
-  );
-
   return Math.max(
-    AQI_ozone,
-    AQI_particlePollution,
-    AQI_carbonMonoxide,
-    AQI_sulfurDioxide,
-    AQI_nitrogenDioxide
+    getAQISubIndex(ozone, ozoneBreakpoints),
+    getAQISubIndex(particlePollution, particlePollutionBreakpoints),
+    getAQISubIndex(carbonMonoxide, carbonMonoxideBreakpoints),
+    getAQISubIndex(sulfurDioxide, sulfurDioxideBreakpoints),
+    getAQISubIndex(nitrogenDioxide, nitrogenDioxideBreakpoints)
   );
 };
 
@@ -119,6 +101,11 @@ export default function MonitoringLogs() {
         carbonMonoxide: 9,
         sulfurDioxide: 75,
         nitrogenDioxide: 100,
+        history: [
+          { date: '2024-07-01', aqi: 150 },
+          { date: '2024-07-02', aqi: 120 },
+          { date: '2024-07-03', aqi: 80 },
+        ],
       },
       {
         id: '2',
@@ -129,6 +116,11 @@ export default function MonitoringLogs() {
         carbonMonoxide: 15,
         sulfurDioxide: 5,
         nitrogenDioxide: 35,
+        history: [
+          { date: '2024-07-01', aqi: 60 },
+          { date: '2024-07-02', aqi: 55 },
+          { date: '2024-07-03', aqi: 50 },
+        ],
       },
       {
         id: '3',
@@ -139,6 +131,11 @@ export default function MonitoringLogs() {
         carbonMonoxide: 10,
         sulfurDioxide: 20,
         nitrogenDioxide: 30,
+        history: [
+          { date: '2024-07-01', aqi: 70 },
+          { date: '2024-07-02', aqi: 90 },
+          { date: '2024-07-03', aqi: 60 },
+        ],
       },
     ];
     landData.forEach((land) => {
@@ -149,6 +146,12 @@ export default function MonitoringLogs() {
         land.sulfurDioxide,
         land.nitrogenDioxide
       );
+      land.flagged = land.history.some((entry, index, array) => {
+        if (index > 0) {
+          return entry.aqi < array[index - 1].aqi - 20;
+        }
+        return false;
+      });
     });
     setLands(landData);
   };
@@ -196,7 +199,7 @@ export default function MonitoringLogs() {
         <Grid container spacing={2}>
           {lands.map((land) => (
             <Grid item xs={12} md={4} key={land.id}>
-              <Card>
+              <Card sx={{ backgroundColor: land.flagged ? '#ffebee' : '#fff' }}>
                 <CardMedia
                   component='img'
                   height='140'
@@ -223,10 +226,11 @@ export default function MonitoringLogs() {
                     Nitrogen dioxide: {land.nitrogenDioxide}
                   </Typography>
                   <Typography variant='body2' color='text.secondary'>
-                    Resultant AQI: {land.aqi}
+                    AQI: {land.aqi}
                   </Typography>
                   <Button
-                    variant='contained'
+                    variant='outlined'
+                    sx={{ marginTop: '10px' }}
                     onClick={() => handleSeeHistory(land)}
                   >
                     See History
