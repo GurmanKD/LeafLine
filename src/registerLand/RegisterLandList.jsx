@@ -22,6 +22,8 @@ import Modal from '@mui/material/Modal';
 import AddForm from './AddForm';
 import EditForm from './EditForm';
 import Skeleton from '@mui/material/Skeleton';
+import config from '../config'; // Adjust the path as needed
+
 
 const style = {
   position: 'absolute',
@@ -37,11 +39,6 @@ const style = {
 
 // Hardcoded data
 const initialRows = [
-  { id: 1, name: 'Changra-Thali Khurd', price: 250, location: 'Thali Khurd', area: '217000 sq ft', greencover:'87%', status:'Sold',date: '2023-07-25' },
-  { id: 2, name: 'Kaureya-Saini Majra', price: 450, location: 'Ghanauli', area: '389500 sq ft', greencover:'89%',  status:'Unsold',date: '2023-07-26' },
-  { id: 3, name: 'Takki-Thali Khurd', price: 120, location: 'Thali', area: '105800 sq ft', greencover:'85%', status:'Unsold', date: '2023-07-27' },
-  { id: 4, name: 'Allowal', price: 170, location: 'Rupnagar', area: '125600 sq ft', greencover:'88%', status:'Unsold', date: '2023-07-28' },
-  
 ];
 
 export default function ProductsList() {
@@ -72,7 +69,7 @@ export default function ProductsList() {
   
   const fetchData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:3002/registered_land');
+      const response = await fetch(`${config.API_BASE_URL}/registered_land`);
       const data = await response.json();
       setRows(data);
       console.log(rows)

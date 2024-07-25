@@ -15,6 +15,8 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Skeleton from '@mui/material/Skeleton';
+import config from '../config'; // Adjust the path as needed
+
 
 export default function CreditsList() {
   const [page, setPage] = useState(0);
@@ -28,7 +30,7 @@ export default function CreditsList() {
 
   const fetchCredits = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:3002/buy-credits');
+      const response = await fetch(`${config.API_BASE_URL}/buy-credits`);
       const data = await response.json();
       setRows(data);
       setLoading(false);
