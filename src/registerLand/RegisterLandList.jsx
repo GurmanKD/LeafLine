@@ -193,16 +193,19 @@ export default function ProductsList() {
               <TableHead>
                 <TableRow>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Name
+                    Land Alias
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Price
+                    Credit Points
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
                     Location
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
                     Area
+                  </TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>
+                    Green Cover
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
                     Date
@@ -227,6 +230,7 @@ export default function ProductsList() {
                         <TableCell align='left'>{String(row.price)}</TableCell>
                         <TableCell align='left'>{row.location}</TableCell>
                         <TableCell align='left'>{row.area}</TableCell>
+                        <TableCell align='left'>46%</TableCell>
                         <TableCell align='left'>{String(row.date)}</TableCell>
                         <TableCell align='left'>
                           <Stack spacing={2} direction='row'>
