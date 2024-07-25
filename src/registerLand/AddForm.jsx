@@ -32,7 +32,8 @@ export default function AddForm({ closeEvent }) {
     });
     getUsers();
     closeEvent();
-    Swal.fire('Submitted!', 'Your file has been submitted.', 'success');
+    
+    // Swal.fire('Submitted!', 'Your file has been submitted.', 'success');
   };
 
   const getUsers = async () => {
@@ -42,20 +43,20 @@ export default function AddForm({ closeEvent }) {
 
   const currencies = [
     {
-      value: 'Laptop',
-      label: 'Laptop',
+      value: 'Village',
+      label: 'Village',
     },
     {
-      value: 'Mobile',
-      label: 'Mobile',
+      value: 'Forest',
+      label: 'Forest',
     },
     {
-      value: 'Electronics',
-      label: 'Electronics',
+      value: 'SubUrban',
+      label: 'SubUrban',
     },
     {
-      value: 'Food',
-      label: 'Food',
+      value: 'Urban',
+      label: 'Urban',
     },
   ];
 
