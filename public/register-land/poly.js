@@ -157,9 +157,44 @@ function lockArea() {
     sendImageToApi(file).then((data) => {
       // console.log(data.t)
       alert(JSON.stringify(data));
+      document.getElementById('hello').innerHTML += '<h2>Estimates:</h2>';
+      document.getElementById('hello').innerHTML +=
+        'Dark Green %: ' + data.dark_green_percentage * 100 + '<br/>';
+      document.getElementById('hello').innerHTML +=
+        'Light Green %: ' + data.light_green_percentage * 100 + '<br/>';
+      document.getElementById('hello').innerHTML +=
+        'Total Green %: ' + data.total_green_percentage * 100;
       paramsAQI(centerLat, centerLng, areaKm2).then((data2) => {
         alert(JSON.stringify(data2));
+
+        document.getElementById('hello').innerHTML +=
+          '<h2>Credits Estimate:</h2>';
+        document.getElementById('hello').innerHTML +=
+          'Adjusted Area Cost: ' + data2.adjusted_area_cost + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Original Credit Cost: ' + data2.original_credit_cost + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Amount of Carbon Mono Oxide: ' + data2.pollutants.co + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Amount of Ammonia: ' + data2.pollutants.nh3 + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Amount of Nitrous Oxide: ' + data2.pollutants.no + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Amount of Nitrogen Dioxide: ' + data2.pollutants.no2 + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Amount of Ozone: ' + data2.pollutants.o3 + '<br/>';
+        document.getElementById('hello').innerHTML +=
+          'Amount of Sulphur Dioxide: ' + data2.pollutants.so2 + '<br/>';
         console.log(JSON.stringify(data2));
+        document.getElementById('hello').innerHTML +=
+          'Amount of Particulate Matter: ' +
+          parseInt(data2.pollutants.pm10) +
+          parseInt(data2.pollutants.pm2_5) +
+          '<br/>';
+        document.getElementById('hello').innerHTML +=
+          '<h2>Resultant AQI: </h2>';
+        document.getElementById('hello').innerHTML +=
+          data2.pollutants.aqi + '<br/>';
       });
     });
 
