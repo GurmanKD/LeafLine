@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,7 +18,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Skeleton from '@mui/material/Skeleton';
 import config from '../config'; // Adjust the path as needed
-
 
 export default function CreditsList() {
   const [page, setPage] = useState(0);
@@ -42,6 +43,10 @@ export default function CreditsList() {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handlePlacedOrder = () => {
+    window.location.href = '/register-land/';
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -121,7 +126,7 @@ export default function CreditsList() {
                   <TableCell align="left">{new Date(row.validity).toLocaleDateString()}</TableCell>
                   <TableCell align="left">{new Date(row.dateOfRegistration).toLocaleDateString()}</TableCell>
                   <TableCell align="left">
-                    <Button variant="contained" onClick={() => {/* Handle order placement */}}>
+                    <Button variant="contained" onClick={handlePlacedOrder}>
                       Place Order
                     </Button>
                   </TableCell>
