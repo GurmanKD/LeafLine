@@ -45,9 +45,11 @@ export default function CreditsList() {
     setPage(newPage);
   };
 
-  const handlePlacedOrder = () => {
-    window.location.href = '/register-land/';
+  const handlePlacedOrder = (name, location) => {
+    // Ensure that parameters are passed as strings
+    window.location.href = `/register-land/index.html?landName=${encodeURIComponent(name)}&address=${encodeURIComponent(location)}`;
   };
+  
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -126,7 +128,7 @@ export default function CreditsList() {
                   <TableCell align="left">{new Date(row.validity).toLocaleDateString()}</TableCell>
                   <TableCell align="left">{new Date(row.dateOfRegistration).toLocaleDateString()}</TableCell>
                   <TableCell align="left">
-                    <Button variant="contained" onClick={handlePlacedOrder}>
+                  <Button variant="contained" onClick={() => handlePlacedOrder(row.name, row.location)}>
                       Place Order
                     </Button>
                   </TableCell>

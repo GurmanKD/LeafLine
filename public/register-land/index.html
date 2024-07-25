@@ -2,6 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+  
+      document.addEventListener("DOMContentLoaded", function() {
+      const landName = getParameterByName('landName');
+      const address = getParameterByName('address');
+
+      if (landName) {
+        document.getElementById('landName').value = landName;
+      }
+      if (address) {
+        document.getElementById('address').value = address;
+      }
+
+      // Lock the inputs
+      document.getElementById('landName').disabled = true;
+      document.getElementById('address').disabled = true;
+    });
+      
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -46,7 +73,7 @@
         <div class="right_containery">
           <form>
             <div class="form-group">
-              <label for="landName">Land Name:</label>
+              <label for="landName">Owner Name:</label>
               <input type="text" id="landName" name="landName" required />
             </div>
             <div class="form-group">
