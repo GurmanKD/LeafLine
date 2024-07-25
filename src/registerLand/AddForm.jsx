@@ -16,7 +16,7 @@ import { useAppStore } from '../appStore';
 export default function AddForm({ closeEvent }) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
-  const [category, setCategory] = useState('');
+  const [location, setLocation] = useState('');
   const [document, setDocument] = useState(null);
   const empCollectionRef = collection(db, 'products');
   const setRows = useAppStore((state) => state.setRows);
@@ -26,7 +26,7 @@ export default function AddForm({ closeEvent }) {
     await addDoc(empCollectionRef, {
       name: name,
       price: Number(price),
-      category: category,
+      location: location,
       document: docUrl,
       date: String(new Date()),
     });
@@ -40,36 +40,13 @@ export default function AddForm({ closeEvent }) {
     setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const currencies = [
-    {
-      value: 'Laptop',
-      label: 'Laptop',
-    },
-    {
-      value: 'Mobile',
-      label: 'Mobile',
-    },
-    {
-      value: 'Electronics',
-      label: 'Electronics',
-    },
-    {
-      value: 'Food',
-      label: 'Food',
-    },
-  ];
 
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
 
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
-  };
 
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
+
 
   const handleDocumentChange = (event) => {
     setDocument(event.target.files[0]);
@@ -107,12 +84,49 @@ export default function AddForm({ closeEvent }) {
             name='name'
             value={name}
             onChange={handleNameChange}
-            label='Name'
+            label='Land Alias'
             size='small'
             sx={{ marginTop: '30px', minWidth: '100%' }}
           />
         </Grid>
+        <Grid item xs={12}>
+          <TextField
+            error={false}
+            id='name'
+            name='name'
+            value={name}
+            onChange={handleNameChange}
+            label='Address'
+            size='small'
+            sx={{ minWidth: '100%' }}
+          />
+        </Grid>
         <Grid item xs={6}>
+          <TextField
+            error={false}
+            id='name'
+            name='name'
+            value={name}
+            onChange={handleNameChange}
+            label='Pincode'
+            size='small'
+            sx={{ minWidth: '50%' }}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            error={false}
+            id='name'
+            name='name'
+            value={name}
+            onChange={handleNameChange}
+            label='State'
+            size='small'
+            sx={{ minWidth: '50%' }}
+          />
+        </Grid>
+
+        {/* <Grid item xs={6}>
           <TextField
             error={false}
             id='price'
@@ -130,8 +144,8 @@ export default function AddForm({ closeEvent }) {
               ),
             }}
           />
-        </Grid>
-        <Grid item xs={6}>
+        </Grid> */}
+        {/* <Grid item xs={6}>
           <TextField
             error={false}
             id='category'
@@ -148,7 +162,7 @@ export default function AddForm({ closeEvent }) {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6}>
           <Button
             variant='contained'
@@ -162,16 +176,15 @@ export default function AddForm({ closeEvent }) {
         </Grid>
         <Grid item xs={6}>
           <Button
-            variant='contained'
-            color='secondary'
-            onClick={() =>
-              (window.location.href = 'https://example.com/demo-video')
-            }
+            variant="contained"
+            color="secondary"
+            onClick={() => window.location.href('https://example.com/demo-video', '_blank')}
             sx={{ minWidth: '100%', marginBottom: '15px' }}
           >
-            Upload Video
+            Video Verification
           </Button>
         </Grid>
+
         <Grid item xs={12}>
           <Button
             variant='contained'
