@@ -191,10 +191,10 @@ function lockArea() {
           parseInt(data2.pollutants.pm10) +
           parseInt(data2.pollutants.pm2_5) +
           '<br/>';
-        document.getElementById('hello').innerHTML +=
-          '<h2>Resultant AQI: </h2>';
-        document.getElementById('hello').innerHTML +=
-          data2.pollutants.aqi + '<br/>';
+        // document.getElementById('hello').innerHTML +=
+        //   '<h2>Resultant AQI: </h2>';
+        // document.getElementById('hello').innerHTML +=
+        //   data2.pollutants.aqi + '<br/>';
       });
     });
 

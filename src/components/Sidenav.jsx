@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
+import TimelineIcon from '@mui/icons-material/Timeline';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -134,7 +135,7 @@ export default function Sidenav() {
             />
           </ListItemButton>
         </ListItem>
-        {/* <ListItem
+        <ListItem
           disablePadding
           sx={{ display: 'block' }}
           onClick={() => {
@@ -155,14 +156,14 @@ export default function Sidenav() {
                 justifyContent: 'center',
               }}
             >
-              <ReceiptLongIcon />
+              <TimelineIcon />
             </ListItemIcon>
             <ListItemText
               primary='Monitoring Logs'
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>
-        </ListItem> */}
+        </ListItem>
         <ListItem
           disablePadding
           sx={{ display: 'block' }}
