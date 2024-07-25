@@ -40,6 +40,10 @@ const style = {
 // Hardcoded data
 const initialRows = [
 ];
+const handlePlacedOrder = (name, location) => {
+  // Ensure that parameters are passed as strings
+  window.location.href = `/register-land/`;
+};
 
 export default function ProductsList() {
   const [page, setPage] = useState(0);
@@ -158,7 +162,7 @@ export default function ProductsList() {
               )}
             />
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}></Typography>
-            <Button variant='contained' endIcon={<AddCircleIcon />} onClick={handleOpen}>
+            <Button variant='contained' endIcon={<AddCircleIcon />} onClick={() => handlePlacedOrder()}>
               Register More Land
             </Button>
           </Stack>

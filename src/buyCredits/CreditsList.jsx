@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,6 +17,9 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Skeleton from '@mui/material/Skeleton';
+
+
+
 import config from '../config'; // Adjust the path as needed
 
 export default function CreditsList() {
@@ -45,9 +48,27 @@ export default function CreditsList() {
     setPage(newPage);
   };
 
-  const handlePlacedOrder = (name, location) => {
+  const handlePlacedOrder = (amount) => {
     // Ensure that parameters are passed as strings
-    window.location.href = `/register-land/index.html?landName=${encodeURIComponent(name)}&address=${encodeURIComponent(location)}`;
+    console.log('amount',amount)
+  
+  
+  
+    const transactionData = {
+      sender: uuidv4(),
+      receiver: uuidv4(),
+      amount: amount? amount:102
+    };
+  
+    axios.post('http://127.0.0.1:8080/add_transaction', transactionData)
+      .then(response => {
+        console.log('Transaction successful:', response.data);
+        alert('Transaction Successful')
+      })
+      .catch(error => {
+        console.error('Error placing transaction:', error);
+      });
+      console.log(transactionData);
   };
   
 
@@ -128,7 +149,7 @@ export default function CreditsList() {
                   <TableCell align="left">{new Date(row.validity).toLocaleDateString()}</TableCell>
                   <TableCell align="left">{new Date(row.dateOfRegistration).toLocaleDateString()}</TableCell>
                   <TableCell align="left">
-                  <Button variant="contained" onClick={() => handlePlacedOrder(row.name, row.location)}>
+                  <Button variant="contained" onClick={() => handlePlacedOrder(row.priceCredits)}>
                       Place Order
                     </Button>
                   </TableCell>
