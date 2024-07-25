@@ -48,7 +48,7 @@ export default function CreditsList() {
     setPage(newPage);
   };
 
-  const handlePlacedOrder = (amount) => {
+  const handlePlacedOrder = (name,amount) => {
     // Ensure that parameters are passed as strings
     console.log('amount',amount)
   
@@ -69,6 +69,8 @@ export default function CreditsList() {
         console.error('Error placing transaction:', error);
       });
       console.log(transactionData);
+      setRows(prevRows => prevRows.filter(row => row.name !== name));
+
   };
   
 
@@ -149,7 +151,7 @@ export default function CreditsList() {
                   <TableCell align="left">{new Date(row.validity).toLocaleDateString()}</TableCell>
                   <TableCell align="left">{new Date(row.dateOfRegistration).toLocaleDateString()}</TableCell>
                   <TableCell align="left">
-                  <Button variant="contained" onClick={() => handlePlacedOrder(row.priceCredits)}>
+                  <Button variant="contained" onClick={() => {handlePlacedOrder(row.name,row.priceCredits);}}>
                       Place Order
                     </Button>
                   </TableCell>

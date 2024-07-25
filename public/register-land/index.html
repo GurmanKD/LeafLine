@@ -91,14 +91,32 @@
             </div>
             <div class="form-group">
               <label for="video">Record Video:</label>
-              <input
-                type="file"
-                id="video"
-                name="video"
-                accept="video/*"
-                required
-              />
+              <a href="http://localhost:5001/view" target="_blank" class="btn btn-primary">
+                Record Video
+              </a>
             </div>
+            
+            <style>
+              .btn {
+                display: inline-block;
+                padding: 8px 16px;
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+                color: #ffffff;
+                text-align: center;
+                text-decoration: none;
+                border: none;
+                border-radius: 4px;
+                background-color: #007bff; /* Bootstrap primary color */
+                cursor: pointer;
+              }
+            
+              .btn:hover {
+                background-color: #0056b3; /* Darker shade of the primary color */
+              }
+            </style>
+            
             <div id="map"></div>
             <div class="column">
               <button type="button" onclick="addMarker()">Add Marker</button>
