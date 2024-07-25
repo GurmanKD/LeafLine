@@ -134,7 +134,7 @@ export default function Sidenav() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem
+        {/* <ListItem
           disablePadding
           sx={{ display: 'block' }}
           onClick={() => {
@@ -162,7 +162,7 @@ export default function Sidenav() {
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
         <ListItem
           disablePadding
           sx={{ display: 'block' }}
@@ -188,6 +188,35 @@ export default function Sidenav() {
             </ListItemIcon>
             <ListItemText
               primary='Buy Credits'
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem
+          disablePadding
+          sx={{ display: 'block' }}
+          onClick={() => {
+            navigate('/BuyCredits');
+          }}
+        >
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+              <ReceiptLongIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary='Purchase History'
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>

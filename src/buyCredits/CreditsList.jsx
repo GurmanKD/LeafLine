@@ -47,7 +47,7 @@ const style = {
 
 export default function CreditsList() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   // const [rows, setRows] = useState([]);
   const rows = useAppStore((state) => state.rows);
   const setRows = useAppStore((state) => state.setRows);
@@ -196,16 +196,16 @@ export default function CreditsList() {
                     Name
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Price
+                    Price-Credits
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
                     Location
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
-                    No. of Credits
+                    Validity
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Date
+                    Date of Land Registration
                   </TableCell>
                   <TableCell align='left' style={{ minWidth: '100px' }}>
                     Action
@@ -229,7 +229,7 @@ export default function CreditsList() {
                         <TableCell align='left'>{row.noOfCredits}</TableCell>
                         <TableCell align='left'>{String(row.date)}</TableCell>
                         <TableCell align='left'>
-                          <Stack spacing={2} direction='row'>
+                          {/* <Stack spacing={2} direction='row'>
                             <EditIcon
                               style={{
                                 fontSize: '20px',
@@ -257,7 +257,14 @@ export default function CreditsList() {
                                 deleteUser(row.id);
                               }}
                             />
-                          </Stack>
+                          </Stack> */}
+                          <Button
+                            variant='contained'
+                            // endIcon={<AddCircleIcon />}
+                            onClick={handleOpen}
+                          >
+                            Place Order
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
