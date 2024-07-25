@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -37,10 +37,10 @@ const style = {
 
 // Hardcoded data
 const initialRows = [
-  { id: 1, name: 'Changra-Thali Khurd', price: 250, location: 'Location A', area: '217000 sq ft', greencover:'87%', status:'Sold',date: '2023-07-25' },
-  { id: 2, name: 'Kaureya-Saini Majra', price: 450, location: 'Location B', area: '389500 sq ft', greencover:'89%',  status:'Unsold',date: '2023-07-26' },
-  { id: 3, name: 'Takki-Thali Khurd', price: 120, location: 'Location C', area: '105800 sq ft', greencover:'85%', status:'Unsold', date: '2023-07-27' },
-  { id: 4, name: 'Allowal', price: 170, location: 'Location D', area: '125600 sq ft', greencover:'88%', status:'Unsold', date: '2023-07-28' },
+  { id: 1, name: 'Changra-Thali Khurd', price: 250, location: 'Thali Khurd', area: '217000 sq ft', greencover:'87%', status:'Sold',date: '2023-07-25' },
+  { id: 2, name: 'Kaureya-Saini Majra', price: 450, location: 'Ghanauli', area: '389500 sq ft', greencover:'89%',  status:'Unsold',date: '2023-07-26' },
+  { id: 3, name: 'Takki-Thali Khurd', price: 120, location: 'Thali', area: '105800 sq ft', greencover:'85%', status:'Unsold', date: '2023-07-27' },
+  { id: 4, name: 'Allowal', price: 170, location: 'Rupnagar', area: '125600 sq ft', greencover:'88%', status:'Unsold', date: '2023-07-28' },
   
 ];
 
@@ -48,7 +48,7 @@ export default function ProductsList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState(initialRows); // Set initial state with hardcoded data
-
+  const [loading, setLoading] = useState(true);
   const [formid, setFormid] = useState('');
   const [open, setOpen] = useState(false);
   const [editopen, setEditOpen] = useState(false);
@@ -65,7 +65,24 @@ export default function ProductsList() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:3002/registered_land');
+      const data = await response.json();
+      setRows(data);
+      console.log(rows)
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
+  };
+  
   const deleteUser = (id) => {
     Swal.fire({
       title: 'Are you sure?',
