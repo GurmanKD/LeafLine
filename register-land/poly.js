@@ -8,6 +8,7 @@ const labelColors = {
   4: 'orange',
   0: 'yellow'
 };
+var areaKm2 = 0.7;
 
 async function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -89,11 +90,30 @@ function lockArea() {
   let minLng = Math.min(...longitudes);
   let maxLng = Math.max(...longitudes);
 
+  let latDiff = maxLat - minLat;
+let lngDiff = maxLng - minLng;
+
+// Convert latitude distance to kilometers (1 degree latitude ≈ 111 km)
+let latDistanceKm = latDiff * 111;
+
+// Convert longitude distance to kilometers
+// Approximate the distance using the average latitude
+let avgLat = (minLat + maxLat) / 2;
+let lngDistanceKm = lngDiff * 111 * Math.cos(avgLat * Math.PI / 180);
+
+// Calculate area in square kilometers
+areaKm2 = latDistanceKm * lngDistanceKm;
   // Display bounding box coordinates
   alert(`Bounding box: (${minLat}, ${minLng}), (${maxLat}, ${maxLng})`);
+  alert('Area: (sqKm)', areaKm2);
+const center = calculateCenter(markers);
+ // Calculate the center of the bounding box
+let centerLat = (minLat + maxLat) / 2;
+let centerLng = (minLng + maxLng) / 2;
 
-  const apiKey = 'AIzaSyAbclwHdrmNLwoUpd-6qTiD8uF6-95gxxc';
-const url = `https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=15&size=600x900&maptype=satellite&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=${apiKey}`;
+// Define the URL for the static map with the bounding box center
+const apiKey = 'AIzaSyAbclwHdrmNLwoUpd-6qTiD8uF6-95gxxc';
+const url = `https://maps.googleapis.com/maps/api/staticmap?center=${centerLat},${centerLng}&zoom=19&size=600x900&maptype=satellite&markers=color:blue%7Clabel:LT%7C${latitudes[0]},${longitudes[0]}&markers=color:green%7Clabel:LB%7C${latitudes[1]},${longitudes[1]}&markers=color:red%7Clabel:RT%7C${latitudes[2]},${longitudes[2]}&markers=color:blue%7RBlabel:X%7C${latitudes[3]},${longitudes[3]}&key=${apiKey}`;
 
 async function downloadImage(url) {
     const response = await fetch(url);
@@ -101,13 +121,56 @@ async function downloadImage(url) {
     const file = new File([blob], "map.png", { type: blob.type });
     return file;
 }
+console.log(url)
+async function sendImageToApi(imageFile) {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  const response = await fetch('https://trees.singhropar.tech/upload?image', {
+      method: 'POST',
+      body: formData
+  });
+
+  const data = await response.json();
+  console.log(data)
+  return data;
+}
 
 
-const center = calculateCenter(markers);
-console.log(`Center coordinates: (${center.lat}, ${center.lng})`);
+async function paramsAQI(lat,lon,area) {
+
+
+
+  const response = await fetch('https://aqi.singhropar.tech/calculate_cost', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        latitude: lat,
+        longitude: lon,
+        area_size: 2
+      })
+  });
+
+  const data = await response.json();
+  console.log(data)
+  return data;
+}
+
 
  downloadImage(url).then((file) => {
     console.log(file);
+    document.getElementById("mu").src = URL.createObjectURL(file);
+    sendImageToApi(file).then((data) => {
+      // console.log(data.t)
+      alert(JSON.stringify(data));
+      paramsAQI(centerLat,centerLng,areaKm2).then((data2) => {
+        alert(JSON.stringify(data2))
+        console.log(JSON.stringify(data2))
+      })
+    })
+
     alert("Image downloaded successfully.");
 });
   setTimeout(() => {
