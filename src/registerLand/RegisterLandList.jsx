@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,15 +13,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { db } from '../firebase-config';
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from 'firebase/firestore';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
@@ -31,7 +22,8 @@ import Modal from '@mui/material/Modal';
 import AddForm from './AddForm';
 import EditForm from './EditForm';
 import Skeleton from '@mui/material/Skeleton';
-import { useAppStore } from '../appStore';
+import config from '../config'; // Adjust the path as needed
+
 
 const style = {
   position: 'absolute',
@@ -45,14 +37,19 @@ const style = {
   p: 4,
 };
 
+// Hardcoded data
+const initialRows = [
+];
+const handlePlacedOrder = (name, location) => {
+  // Ensure that parameters are passed as strings
+  window.location.href = `/register-land/`;
+};
+
 export default function ProductsList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  // const [rows, setRows] = useState([]);
-  const rows = useAppStore((state) => state.rows);
-  const setRows = useAppStore((state) => state.setRows);
-  const empCollectionRef = collection(db, 'products');
-
+  const [rows, setRows] = useState(initialRows); // Set initial state with hardcoded data
+  const [loading, setLoading] = useState(true);
   const [formid, setFormid] = useState('');
   const [open, setOpen] = useState(false);
   const [editopen, setEditOpen] = useState(false);
@@ -60,15 +57,6 @@ export default function ProductsList() {
   const handleEditOpen = () => setEditOpen(true);
   const handleClose = () => setOpen(false);
   const handleEditClose = () => setEditOpen(false);
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  const getUsers = async () => {
-    const data = await getDocs(empCollectionRef);
-    setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -78,7 +66,24 @@ export default function ProductsList() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${config.API_BASE_URL}/registered_land`);
+      const data = await response.json();
+      setRows(data);
+      console.log(rows)
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
+  };
+  
   const deleteUser = (id) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -96,27 +101,20 @@ export default function ProductsList() {
   };
 
   const deleteApi = async (id) => {
-    const userDoc = doc(db, 'products', id);
-    await deleteDoc(userDoc);
+    setRows(rows.filter((row) => row.id !== id));
     Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-    getUsers();
   };
 
   const filterData = (v) => {
     if (v) {
       setRows([v]);
     } else {
-      getUsers();
+      setRows(initialRows);
     }
   };
 
-  const editData = (id, name, price, category) => {
-    const data = {
-      id: id,
-      name: name,
-      price: price,
-      category: category,
-    };
+  const editData = (id, name, price, location, area) => {
+    const data = { id, name, price, location, area };
     setFormid(data);
     handleEditOpen();
   };
@@ -126,7 +124,6 @@ export default function ProductsList() {
       <div>
         <Modal
           open={open}
-          // onClose={handleClose}
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
@@ -136,7 +133,6 @@ export default function ProductsList() {
         </Modal>
         <Modal
           open={editopen}
-          // onClose={handleEditClose}
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
@@ -148,12 +144,7 @@ export default function ProductsList() {
 
       {rows.length > 0 && (
         <Paper sx={{ width: '98%', overflow: 'hidden', padding: '12px' }}>
-          <Typography
-            gutterBottom
-            variant='h5'
-            component='div'
-            sx={{ padding: '20px' }}
-          >
+          <Typography gutterBottom variant='h5' component='div' sx={{ padding: '20px' }}>
             Register Land
           </Typography>
           <Divider />
@@ -167,23 +158,11 @@ export default function ProductsList() {
               onChange={(e, v) => filterData(v)}
               getOptionLabel={(rows) => rows.name || ''}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size='small'
-                  label='Search Registered Land'
-                />
+                <TextField {...params} size='small' label='Search Registered Land' />
               )}
             />
-            <Typography
-              variant='h6'
-              component='div'
-              sx={{ flexGrow: 1 }}
-            ></Typography>
-            <Button
-              variant='contained'
-              endIcon={<AddCircleIcon />}
-              onClick={handleOpen}
-            >
+            <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}></Typography>
+            <Button variant='contained' endIcon={<AddCircleIcon />} onClick={() => handlePlacedOrder()}>
               Register More Land
             </Button>
           </Stack>
@@ -192,80 +171,41 @@ export default function ProductsList() {
             <Table stickyHeader aria-label='sticky table'>
               <TableHead>
                 <TableRow>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Land Alias
-                  </TableCell>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Credit Points
-                  </TableCell>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Location
-                  </TableCell>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Area
-                  </TableCell>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Green Cover
-                  </TableCell>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Date
-                  </TableCell>
-                  <TableCell align='left' style={{ minWidth: '100px' }}>
-                    Action
-                  </TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Land Alias</TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Credit Points</TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Location</TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Area</TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Green Cover</TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Status</TableCell>
+
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Date</TableCell>
+                  <TableCell align='left' style={{ minWidth: '100px' }}>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow
-                        hover
-                        role='checkbox'
-                        tabIndex={-1}
-                        key={row.code}
-                      >
-                        <TableCell align='left'>{row.name}</TableCell>
-                        <TableCell align='left'>{String(row.price)}</TableCell>
-                        <TableCell align='left'>{row.location}</TableCell>
-                        <TableCell align='left'>{row.area}</TableCell>
-                        <TableCell align='left'>46%</TableCell>
-                        <TableCell align='left'>{String(row.date)}</TableCell>
-                        <TableCell align='left'>
-                          <Stack spacing={2} direction='row'>
-                            <EditIcon
-                              style={{
-                                fontSize: '20px',
-                                color: 'blue',
-                                cursor: 'pointer',
-                              }}
-                              className='cursor-pointer'
-                              onClick={() => {
-                                editData(
-                                  row.id,
-                                  row.name,
-                                  row.price,
-                                  row.location,
-                                  row.area
-                                );
-                              }}
-                            />
-                            <DeleteIcon
-                              style={{
-                                fontSize: '20px',
-                                color: 'darkred',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => {
-                                deleteUser(row.id);
-                              }}
-                            />
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
+                    <TableCell align='left'>{row.name}</TableCell>
+                    <TableCell align='left'>{String(row.price)}</TableCell>
+                    <TableCell align='left'>{row.location}</TableCell>
+                    <TableCell align='left'>{row.area}</TableCell>
+                    <TableCell align='left'>{row.greencover}</TableCell>
+                    <TableCell align='left'>{row.status}</TableCell>
+                    <TableCell align='left'>{String(row.date)}</TableCell>
+                    <TableCell align='left'>
+                      <Stack spacing={2} direction='row'>
+                        <EditIcon
+                          style={{ fontSize: '20px', color: 'blue', cursor: 'pointer' }}
+                          onClick={() => editData(row.id, row.name, row.price, row.location, row.area)}
+                        />
+                        <DeleteIcon
+                          style={{ fontSize: '20px', color: 'darkred', cursor: 'pointer' }}
+                          onClick={() => deleteUser(row.id)}
+                        />
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -280,7 +220,7 @@ export default function ProductsList() {
           />
         </Paper>
       )}
-      {rows.length == 0 && (
+      {rows.length === 0 && (
         <>
           <Paper sx={{ width: '98%', overflow: 'hidden', padding: '12px' }}>
             <Box height={20} />

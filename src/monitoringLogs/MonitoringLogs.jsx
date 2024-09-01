@@ -95,7 +95,7 @@ export default function MonitoringLogs() {
       {
         id: '1',
         name: 'Land 1',
-        photoUrl: 'https://via.placeholder.com/150',
+        photoUrl: '/trees.jpg',
         ozone: 70,
         particlePollution: 55,
         carbonMonoxide: 9,
@@ -110,7 +110,7 @@ export default function MonitoringLogs() {
       {
         id: '2',
         name: 'Land 2',
-        photoUrl: 'https://via.placeholder.com/150',
+        photoUrl: '/trees2.jpg',
         ozone: 60,
         particlePollution: 25,
         carbonMonoxide: 15,
@@ -125,7 +125,7 @@ export default function MonitoringLogs() {
       {
         id: '3',
         name: 'Land 3',
-        photoUrl: 'https://via.placeholder.com/150',
+        photoUrl: '/trees3.jpg',
         ozone: 50,
         particlePollution: 20,
         carbonMonoxide: 10,

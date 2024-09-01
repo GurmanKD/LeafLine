@@ -14,7 +14,7 @@ export default function DashAccordion() {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Accordion 1</Typography>
+          <Typography>Ropar, Punjab</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -29,7 +29,7 @@ export default function DashAccordion() {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Accordion 2</Typography>
+          <Typography>Luckhnow, UP</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -44,7 +44,7 @@ export default function DashAccordion() {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Accordion 2</Typography>
+          <Typography>Mohali, Punjab</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -59,7 +59,7 @@ export default function DashAccordion() {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Accordion 2</Typography>
+          <Typography>Rudrapur, Uttrakhand</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
